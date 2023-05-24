@@ -45,7 +45,7 @@ void CameraSystem::EnableFreeCam(bool bFreeCamMode) {
 		bNearDOFEnabled = 0;
 		bFarDOFEnabled = 1;
 		fLensFocusRange = 7;
-		fLensFocalLength = 100;
+		fLensFocalLength = 50;
 		fFStop = 40;
 		fCameraFOV = 1.4;
 		memcpy(&vector3CameraPosition, LPVOID(DisruptHook::pCameraPosition), 12); //Load current camera position as the starting point.
@@ -105,56 +105,76 @@ void CameraSystem::UpdateCamera() {
 				vector2LensConditionals = { bNearDOFEnabled, bFarDOFEnabled };
 				vector3LensFloats = { fLensFocusRange, fLensFocalLength, fFStop };
 				//Update Pitch and Yaw based on user mouse movement.
-				fPitch -= DisruptHook::fMouseDisplacementY * 0.008;
-				fYaw += DisruptHook::fMouseDisplacementX * 0.008;
-
+				//Code commented as we are using only keyboard for everything
+				//fPitch -= DisruptHook::fMouseDisplacementY * 0.008;
+				//fYaw += DisruptHook::fMouseDisplacementX * 0.008;
 				//The remainder of the code is mostly "what to do" when user presses a certain key.
-				if (GetAsyncKeyState(VK_UP)) {
+				if (GetAsyncKeyState(VK_NUMPAD8) && !GetAsyncKeyState(VK_SUBTRACT)) {
 					//Move camera forward.
-					vector3CameraPosition.x += 0.03 * matrixFinalViewMatrix._11 * fMovementSpeedFactor;
-					vector3CameraPosition.y += 0.03 * matrixFinalViewMatrix._12 * fMovementSpeedFactor;
-					vector3CameraPosition.z += 0.03 * matrixFinalViewMatrix._13 * fMovementSpeedFactor;
-				}
-
-				if (GetAsyncKeyState(VK_DOWN)) {
-					//Backwards.
-					vector3CameraPosition.x -= 0.03 * matrixFinalViewMatrix._11 * fMovementSpeedFactor;
-					vector3CameraPosition.y -= 0.03 * matrixFinalViewMatrix._12 * fMovementSpeedFactor;
-					vector3CameraPosition.z -= 0.03 * matrixFinalViewMatrix._13 * fMovementSpeedFactor;
-				}
-
-				if (GetAsyncKeyState(VK_LEFT)) {
-					//Left.
-					vector3CameraPosition.x -= 0.03 * matrixFinalViewMatrix._12 * fMovementSpeedFactor;
-					vector3CameraPosition.y += 0.03 * matrixFinalViewMatrix._11 * fMovementSpeedFactor;
-				}
-
-				if (GetAsyncKeyState(VK_RIGHT)) {
-					//Right.
-					vector3CameraPosition.x += 0.03 * matrixFinalViewMatrix._12 * fMovementSpeedFactor;
-					vector3CameraPosition.y -= 0.03 * matrixFinalViewMatrix._11 * fMovementSpeedFactor;
-				}
-
-				if (GetAsyncKeyState(VK_MULTIPLY)) {
-					//Increase freecam speed.
-					fMovementSpeedFactor += 0.7;
-					while (GetAsyncKeyState(VK_MULTIPLY));
+					vector3CameraPosition.x += 0.01 * matrixFinalViewMatrix._11 * fMovementSpeedFactor;
+					vector3CameraPosition.y += 0.01 * matrixFinalViewMatrix._12 * fMovementSpeedFactor;
+					vector3CameraPosition.z += 0.01 * matrixFinalViewMatrix._13 * fMovementSpeedFactor;
 				}
 
 				if (GetAsyncKeyState(VK_SUBTRACT)) {
+					//Pitch camera upward
+					if (GetAsyncKeyState(VK_NUMPAD8)) fPitch -= 0.001;
+				}
+
+				if (GetAsyncKeyState(VK_NUMPAD2) && !GetAsyncKeyState(VK_SUBTRACT)) {
+					//Backwards.
+					vector3CameraPosition.x -= 0.01 * matrixFinalViewMatrix._11 * fMovementSpeedFactor;
+					vector3CameraPosition.y -= 0.01 * matrixFinalViewMatrix._12 * fMovementSpeedFactor;
+					vector3CameraPosition.z -= 0.01 * matrixFinalViewMatrix._13 * fMovementSpeedFactor;
+				}
+
+				if (GetAsyncKeyState(VK_SUBTRACT)) {
+					//Pitch camera downward
+					if (GetAsyncKeyState(VK_NUMPAD2)) fPitch += 0.001;
+				}
+
+				if (GetAsyncKeyState(VK_NUMPAD4) && !GetAsyncKeyState(VK_SUBTRACT)) {
+					//Left.
+					vector3CameraPosition.x -= 0.01 * matrixFinalViewMatrix._12 * fMovementSpeedFactor;
+					vector3CameraPosition.y += 0.01 * matrixFinalViewMatrix._11 * fMovementSpeedFactor;
+				}
+
+				if (GetAsyncKeyState(VK_SUBTRACT)) {
+					//turn camera left
+					if (GetAsyncKeyState(VK_NUMPAD4)) fYaw += 0.001;
+				}
+
+				if (GetAsyncKeyState(VK_NUMPAD6) && !GetAsyncKeyState(VK_SUBTRACT)) {
+					//Right.
+					vector3CameraPosition.x += 0.01 * matrixFinalViewMatrix._12 * fMovementSpeedFactor;
+					vector3CameraPosition.y -= 0.01 * matrixFinalViewMatrix._11 * fMovementSpeedFactor;
+				}
+
+				if (GetAsyncKeyState(VK_SUBTRACT)) {
+					//turn camera right
+					if (GetAsyncKeyState(VK_NUMPAD6)) fYaw -= 0.001;
+				}
+
+				if (GetAsyncKeyState(VK_DIVIDE)) {
+					//Increase freecam speed.
+					fMovementSpeedFactor += 0.7;
+					while (GetAsyncKeyState(VK_DIVIDE));
+				}
+
+				if (GetAsyncKeyState(VK_MULTIPLY)) {
 					//Decrease freecam speed.
 					fMovementSpeedFactor -= 0.7;
-					while (GetAsyncKeyState(VK_SUBTRACT));
+					while (GetAsyncKeyState(VK_MULTIPLY));
 				}
 
-				if (GetAsyncKeyState(VK_HOME)) {
+				if (GetAsyncKeyState(VK_NUMPAD9) && !GetAsyncKeyState(VK_SUBTRACT)) {
 					//Move camera upwards.
-					vector3CameraPosition.z += 0.005;
+					vector3CameraPosition.z += 0.002;
 				}
 
-				if (GetAsyncKeyState(VK_END)) {
+				if (GetAsyncKeyState(VK_NUMPAD3) && !GetAsyncKeyState(VK_SUBTRACT)) {
 					//Move camera downwards.
-					vector3CameraPosition.z -= 0.005;
+					vector3CameraPosition.z -= 0.002;
 				}
 
 				if (GetAsyncKeyState(VK_NUMPAD7)) {
@@ -167,35 +187,45 @@ void CameraSystem::UpdateCamera() {
 					fRoll -= 0.001;
 				}
 
-				if (GetAsyncKeyState(VK_NUMPAD9)) {
+				if (GetAsyncKeyState(VK_SUBTRACT)) {
 					//Increase FOV, but we don't want to do it past a certain threshold otherwise shit gets funky.
-					if (fCameraFOV < 2.5) fCameraFOV += 0.003;
+					if (GetAsyncKeyState(VK_NUMPAD9) && fCameraFOV < 2.5) fCameraFOV += 0.002;
 				}
 
-				if (GetAsyncKeyState(VK_NUMPAD3)) {
-						//Decrease FOV, yada yada shit gets funky if too low.
-						if (fCameraFOV > 0.1) fCameraFOV -= 0.003;
+				if (GetAsyncKeyState(VK_SUBTRACT)) {
+					//Decrease FOV, yada yada shit gets funky if too low.
+					if (GetAsyncKeyState(VK_NUMPAD3) && fCameraFOV > 0.1) fCameraFOV -= 0.002;
 				}
 
-				if (GetAsyncKeyState(VK_NUMPAD8)) {
+				if (GetAsyncKeyState(VK_UP)) {
 					//Increase Focus Range.
 					fLensFocusRange += 0.02;
 				}
 
-				if (GetAsyncKeyState(VK_NUMPAD2)) {
-					//We don't want to decrease the focus range below 1.5 otherwise the screen is just a blur.
-					if (fLensFocusRange > 1.5) fLensFocusRange -= 0.02;
+				if (GetAsyncKeyState(VK_DOWN)) {
+					//We don't want to decrease the focus range below 0.5 otherwise the screen is just a blur.
+					if (fLensFocusRange > 0.5) fLensFocusRange -= 0.02;
 				}
 
-				if (GetAsyncKeyState(VK_NUMPAD6)) {
+				if (GetAsyncKeyState(VK_RIGHT) && !GetAsyncKeyState(VK_MENU)) {
 					//Increase focal stop.
-					fFStop += 0.02;
+					fFStop += 0.01;
 				}
 
-				if (GetAsyncKeyState(VK_NUMPAD4)) {
-					//We don't want to decrease the focal stop below 1.3 otherwise the screen is just a blur as well.
-					if (fFStop > 1.3) fFStop -= 0.02;
+				if (GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_MENU)) {
+					//We don't want to decrease the focal stop below 1.0 otherwise the screen is just a blur as well.
+					if (fFStop > 1.0) fFStop -= 0.01;
 				}
+				if (GetAsyncKeyState(VK_MENU)) {
+					//Increase focal length.
+					if (GetAsyncKeyState(VK_RIGHT)) fLensFocalLength += 1;
+				}
+
+				if (GetAsyncKeyState(VK_MENU)) {
+					//We don't want to decrease the focal length below 24 there is no or not much DoF visible.
+					if (GetAsyncKeyState(VK_LEFT) && fLensFocalLength > 24) fLensFocalLength -= 1;
+				}
+
 
 				/*
 				* This toggles between Near and Far DOF modes, each of those require certain lens settings initially
@@ -215,7 +245,7 @@ void CameraSystem::UpdateCamera() {
 						bNearDOFEnabled = 0;
 						bFarDOFEnabled = 1;
 						fLensFocusRange = 7;
-						fLensFocalLength = 100;
+						fLensFocalLength = 50;
 						fFStop = 40;
 					}
 					while (GetAsyncKeyState(VK_NUMPAD5));
