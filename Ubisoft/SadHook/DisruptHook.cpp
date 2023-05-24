@@ -31,7 +31,8 @@ void DisruptHook::Initialize() {
 	nMultiSampleModeHQ = 0;  //...
 	nMultiSampleQualityLevelHQ = 0; //..
 	nMapSizeHQ = 8192; //Used for Reflection Map Size, Shadow Map Size, etc...
-	nRainShadowMapSizeHQ = 1024; //Used Only for the Rain Shadow Map, since a high value results in an odd and sharp looking map.
+	nRainShadowMapSizeHQ = 1536; //Used Only for the Rain Shadow Map, since a high value results in an odd and sharp looking map.
+				     //Above 2048, rain start looking like razoblades.
 	fObjectMinSizeHQ = 0; //Used for all minimum object sizes to allow everything in the scene to be rendered.
 
 	/*
@@ -129,12 +130,22 @@ void DisruptHook::DisruptHookUpdate() {
 			pFSMShadowRange = pRenderConfig + 0xA7C;
 
 			//The remainder of the code is mostly "what to do" when user presses a certain key.
-			if (GetAsyncKeyState(VK_NEXT)) {
+			if (GetAsyncKeyState(VK_NEXT) && !GetAsyncKeyState(VK_MENU)) {
 				fTimeOfDay += 40; //Increase time of day.
 			}
-
-			if (GetAsyncKeyState(VK_PRIOR)) {
+			
+			if (GetAsyncKeyState(VK_MENU)) {
+				//Smooth Time of Dat chages increment
+				if (GetAsyncKeyState(VK_NEXT)) fTimeOfDay += 5; 
+			}
+			
+			if (GetAsyncKeyState(VK_PRIOR) && !GetAsyncKeyState(VK_MENU)) {
 				fTimeOfDay -= 40; //Decrease time of day.
+			}
+			
+			if (GetAsyncKeyState(VK_MENU)) {
+				//Smooth Time of Dat chages decrement
+				if (GetAsyncKeyState(VK_PRIOR)) fTimeOfDay -= 5; 
 			}
 
 			if (GetAsyncKeyState(VK_F1)) {
