@@ -212,18 +212,18 @@ void CameraSystem::UpdateCamera() {
 					fFStop += 0.02;
 				}
 
-				if (GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_MENU)) {
-					//We don't want to decrease the focal stop below 1.0 otherwise the screen is just a blur as well.
-					if (fFStop > 1.0) fFStop -= 0.02;
+				//if (GetAsyncKeyState(VK_LEFT) && !GetAsyncKeyState(VK_MENU)) {
+				//	//We don't want to decrease the focal stop below 1.0 otherwise the screen is just a blur as well.
+				//	if (fFStop > 1.0) fFStop -= 0.02;
 				}
 				if (GetAsyncKeyState(VK_MENU)) {
 					//Increase focal length.
 					if (GetAsyncKeyState(VK_RIGHT)) fLensFocalLength += 1;
 				}
 
-				if (GetAsyncKeyState(VK_MENU)) {
-					//We don't want to decrease the focal length below 24 there is no or not much DoF visible.
-					if (GetAsyncKeyState(VK_LEFT) && fLensFocalLength > 24) fLensFocalLength -= 1;
+				//if (GetAsyncKeyState(VK_MENU)) {
+				//	//We don't want to decrease the focal length below 24 there is no or not much DoF visible.
+				//	if (GetAsyncKeyState(VK_LEFT) && fLensFocalLength > 24) fLensFocalLength -= 1;
 				}
 
 
