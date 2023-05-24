@@ -45,7 +45,7 @@ void CameraSystem::EnableFreeCam(bool bFreeCamMode) {
 		bNearDOFEnabled = 0;
 		bFarDOFEnabled = 1;
 		fLensFocusRange = 7;
-		fLensFocalLength = 50;
+		fLensFocalLength = 100;
 		fFStop = 40;
 		fCameraFOV = 1.4;
 		memcpy(&vector3CameraPosition, LPVOID(DisruptHook::pCameraPosition), 12); //Load current camera position as the starting point.
@@ -237,7 +237,7 @@ void CameraSystem::UpdateCamera() {
 						bNearDOFEnabled = 1;
 						bFarDOFEnabled = 1;
 						fLensFocusRange = 7;
-						fLensFocalLength = 50;
+						fLensFocalLength = 100;
 						fFStop = 7.5;
 					}
 					else {
@@ -245,7 +245,7 @@ void CameraSystem::UpdateCamera() {
 						bNearDOFEnabled = 0;
 						bFarDOFEnabled = 1;
 						fLensFocusRange = 7;
-						fLensFocalLength = 50;
+						fLensFocalLength = 100;
 						fFStop = 40;
 					}
 					while (GetAsyncKeyState(VK_NUMPAD5));
