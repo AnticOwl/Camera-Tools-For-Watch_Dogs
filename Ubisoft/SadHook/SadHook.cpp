@@ -37,6 +37,7 @@ void SadHook::ShowConsole() {
 	std::cout << "-		ARROW UP-DOWN                         :         +/- Depth of Field Focus Range               -" << std::endl;
 	std::cout << "-		ALT + ARROW LEFT-RIGHT                :         +/- Change focal Length                      -" << std::endl;
 	std::cout << "-		PAGE UP/DOWN                          :         +/- Time Of Day                              -" << std::endl;
+	std::cout << "-		ALT + PAGE UP/DOWN                    :         +/- Time Of Day (smoother)                   -" << std::endl;
 	std::cout << "-		F1/F2/F3                              :         Cycle Weather (Clear, Cloudy, Storm)         -" << std::endl;
 	std::cout << "-		F4                                    :         Toggle HUD/UI                                -" << std::endl;
 	std::cout << "-		F5                                    :         Toggle Freeze                                -" << std::endl;
