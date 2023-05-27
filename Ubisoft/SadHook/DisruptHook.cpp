@@ -136,7 +136,7 @@ void DisruptHook::DisruptHookUpdate() {
 			
 			if (GetAsyncKeyState(VK_MENU)) {
 				//Smooth Time of Dat chages increment
-				if (GetAsyncKeyState(VK_NEXT)) fTimeOfDay += 5; 
+				if (GetAsyncKeyState(VK_NEXT)) fTimeOfDay += 3; 
 			}
 			
 			if (GetAsyncKeyState(VK_PRIOR) && !GetAsyncKeyState(VK_MENU)) {
@@ -145,7 +145,7 @@ void DisruptHook::DisruptHookUpdate() {
 			
 			if (GetAsyncKeyState(VK_MENU)) {
 				//Smooth Time of Dat chages decrement
-				if (GetAsyncKeyState(VK_PRIOR)) fTimeOfDay -= 5; 
+				if (GetAsyncKeyState(VK_PRIOR)) fTimeOfDay -= 3; 
 			}
 
 			if (GetAsyncKeyState(VK_F1)) {
